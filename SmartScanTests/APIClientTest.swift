@@ -39,8 +39,7 @@ final class APIClientTest: XCTestCase {
 
     func testGetEmployees(){
         let expectations = expectation(description: "Get Employees")
-        let apiClient = APIClient()
-        apiClient.baseURL = URL(string: "https://dummy.restapiexample.com/")!
+        let apiClient = APIClient(baseURL: URL(string: "https://dummy.restapiexample.com/")!)
         let request = GetEmployees()
         apiClient.send(request) { response in
             print("\nGetEmployees finished: \(response)")
@@ -52,8 +51,7 @@ final class APIClientTest: XCTestCase {
     func testGetEmployees_Task(){
         let expectations = expectation(description: "Get Employees")
         Task{
-            let apiClient = APIClient()
-            apiClient.baseURL = URL(string: "https://dummy.restapiexample.com/")!
+            let apiClient = APIClient(baseURL: URL(string: "https://dummy.restapiexample.com/")!)
             let request = GetEmployees()
             do {
                 let model = try await apiClient.send(request).data

@@ -5,6 +5,14 @@
 //  Created by Chien Nguyen on 3/23/24.
 //
 
+/**
+ TODO:
+ - Use access token when send request:
+ request.setValue("Bearer: \(accessToken)", forHTTPHeaderField: "Authorization")
+ - Certificate pinning from URLSessionDelegate
+ urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge)
+ */
+
 import Foundation
 
 public typealias ResultCallback<Value> = (Result<Value, Error>) -> Void
@@ -15,7 +23,12 @@ public typealias ResultCallback<Value> = (Result<Value, Error>) -> Void
    - Parameter completionHandler: block that return Codable data and APIError
  */
 public final class APIClient {
-    var baseURL = URL(string: "DataCenter.shared.endpoint")!
+    private let baseURL:URL
+    private let session = URLSession(configuration: .default)
+    
+    public init(baseURL: URL){
+        self.baseURL = baseURL
+    }
     
     //Send APIRequest with block
     public func send<T:APIRequest>(_ request: T, completion: @escaping ResultCallback<T.Response>) {
@@ -24,7 +37,7 @@ public final class APIClient {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: req) { (data, response, error) in
+        let task = session.dataTask(with: req) { (data, response, error) in
             if let error = error{
                 completion(.failure(APIError.map(error)))
                 return
@@ -67,7 +80,7 @@ public final class APIClient {
         guard let req = request.request(with: baseURL) else{
             throw APIError.encoding
         }
-        let (data, response) = try await URLSession.shared.data(for: req)
+        let (data, response) = try await session.data(for: req)
         
         //APIResponse type, return status code and raw data
         if T.Response.self == APIResponse.self{
