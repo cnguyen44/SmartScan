@@ -9,7 +9,7 @@ import Foundation
 
 /// HTTP methods for APIClient
 public enum HTTPMethod: String{
-    case get, post, put, delete, patch
+    case get, post, put, delete
 }
 
 /// API errors

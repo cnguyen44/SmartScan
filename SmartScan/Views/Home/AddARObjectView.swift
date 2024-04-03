@@ -7,36 +7,9 @@
 
 import SwiftUI
 
-class ARAddAnnotationViewModel: ObservableObject {
-    var service: ARAnnotationService
-    
-    init() {
-        self.service = ARAnnotationService()
-        self.service.annotationStyle = .sphere
-        self.service.canAddAnnotation = true
-    }
-    
-    func startScan(){
-        self.service.prepare { result in
-            switch result{
-            case .success(let data):
-                print(data)
-                break
-            case .failure(let error):
-                //TODO: show error
-                print(error)
-            }
-        }
-    }
-    
-    func stopScan(){
-        self.service.stop()
-    }
-}
-
 struct ARAddAnnotationView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject var model = ARAddAnnotationViewModel()
+    @StateObject var model = ViewModel()
     @State private var startAnnotation = false
     @State private var annotationStyle = ARAnnotationStyle.targetSquare
     
@@ -163,6 +136,35 @@ struct ARAddAnnotationView: View {
         }
         .onDisappear {
             model.service.stop()
+        }
+    }
+}
+
+extension ARAddAnnotationView{
+    class ViewModel: ObservableObject {
+        var service: ARAnnotationService
+        
+        init() {
+            self.service = ARAnnotationService()
+            self.service.annotationStyle = .sphere
+            self.service.canAddAnnotation = true
+        }
+        
+        func startScan(){
+            self.service.prepare { result in
+                switch result{
+                case .success(let data):
+                    print(data)
+                    break
+                case .failure(let error):
+                    //TODO: show error
+                    print(error)
+                }
+            }
+        }
+        
+        func stopScan(){
+            self.service.stop()
         }
     }
 }

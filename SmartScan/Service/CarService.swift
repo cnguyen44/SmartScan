@@ -15,8 +15,7 @@ typealias CarServiceCompletionHandler = (Result<(Car), CarServiceError>) -> Void
 
 class CarService{
     func getVehicle(vin: String, handler: @escaping CarServiceCompletionHandler){
-        let apiClient = APIClient()
-        apiClient.baseURL = URL(string: DataManager.shared.vinEndpoint)!
+        let apiClient = APIClient(baseURL: URL(string: DataManager.shared.vinEndpoint)!)
         let request = GetCarRequest(vin: vin)
         apiClient.send(request) { response in
             print("Get Car finished: \(response)")
