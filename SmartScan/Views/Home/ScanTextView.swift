@@ -6,39 +6,10 @@
 //
 
 import SwiftUI
-
-class ScanTextViewModel: ObservableObject {
-    var service: ScanService
-    
-    init() {
-        self.service = ScanTextService()
-    }
-    
-    func startScan(){
-        self.service.prepareScan { (result) in
-            switch result{
-            case .success(let data):
-                guard let text = data.first?.result else {
-                    return
-                }
-                print(text)
-                //TODO: translate text with GooleML
-            case .failure(let error):
-                //TODO: show error
-                print(error)
-            }
-        }
-    }
-    
-    func stopScan(){
-        self.service.stop()
-    }
-}
-    
     
 struct ScanTextView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject private var model = ScanTextViewModel()
+    @StateObject private var model = ViewModel()
     
     init(){
         print("ScanTextView init")
@@ -77,6 +48,36 @@ struct ScanTextView: View {
         .onDisappear {
             print("ScanTextView onDisappear")
             self.model.stopScan()
+        }
+    }
+}
+
+extension ScanTextView{
+    class ViewModel: ObservableObject {
+        var service: ScanService
+        
+        init() {
+            self.service = ScanTextService()
+        }
+        
+        func startScan(){
+            self.service.prepareScan { (result) in
+                switch result{
+                case .success(let data):
+                    guard let text = data.first?.result else {
+                        return
+                    }
+                    print(text)
+                    //TODO: translate text with GooleML
+                case .failure(let error):
+                    //TODO: show error
+                    print(error)
+                }
+            }
+        }
+        
+        func stopScan(){
+            self.service.stop()
         }
     }
 }

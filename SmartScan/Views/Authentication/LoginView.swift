@@ -12,32 +12,9 @@ enum FocusedField:Hashable{
     case name, password
 }
 
-class LoginViewModel: ObservableObject {
-    @Published var isAppUnLocked = false
-    @Published var errorMessage = ""
-    
-    func signin(username: String, password: String) {
-        let service = AuthenticationService()
-        service.signin(username: username, password: password) { [weak self] result in
-            switch result {
-            case .success(let user):
-                DispatchQueue.main.async {
-                    DataManager.shared.user = user
-                    self?.isAppUnLocked = true
-                }
-            case .failure(let error):
-                print(error)
-                DispatchQueue.main.async {
-                    self?.errorMessage = "Invalid username or password"
-                }
-            }
-        }
-    }
-}
-
 struct LoginView: View {
     @EnvironmentObject var appLockVM: AppLockViewModel
-    @StateObject private var viewModel = LoginViewModel()
+    @StateObject private var viewModel = ViewModel()
     @State private var username = ""
     @State private var password = ""
     @FocusState private var focus: FocusedField?
@@ -141,6 +118,31 @@ struct LoginView: View {
                 }
             }
             .store(in: &cancellables)
+        }
+    }
+}
+
+extension LoginView{
+    class ViewModel: ObservableObject {
+        @Published var isAppUnLocked = false
+        @Published var errorMessage = ""
+        
+        func signin(username: String, password: String) {
+            let service = AuthenticationService()
+            service.signin(username: username, password: password) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    DispatchQueue.main.async {
+                        DataManager.shared.user = user
+                        self?.isAppUnLocked = true
+                    }
+                case .failure(let error):
+                    print(error)
+                    DispatchQueue.main.async {
+                        self?.errorMessage = "Invalid username or password"
+                    }
+                }
+            }
         }
     }
 }

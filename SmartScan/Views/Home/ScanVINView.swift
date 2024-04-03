@@ -7,63 +7,10 @@
 
 import SwiftUI
 import Combine
-
-class ScanVINViewModel: ObservableObject {
-    var overlayColor = Color(red: 233/255.0, green: 31/255.0, blue: 31/255.0)
-    var service: ScanService
-    
-    init() {
-        self.service = ScanVINService()
-        self.service.deviceOrientation = .landscapeRight
-    }
-    
-    func startScan(){
-        self.overlayColor = Color(red: 233/255.0, green: 31/255.0, blue: 31/255.0)
-        self.service.prepareScan { (result) in
-            switch result{
-            case .success(let data):
-                guard let vin = data.first?.result else {
-                    return
-                }
-                if self.service.state == .active {
-                    DispatchQueue.main.async {
-                        self.stopScan()
-                        self.overlayColor = Color(red: 31/255.0, green: 189/255.0, blue: 233/255.0)
-                    }
-                    self.getVehicle(vin: vin)
-                }
-            case .failure(let error):
-                //TODO: show error
-                print(error)
-            }
-        }
-    }
-    
-    func stopScan(){
-        self.service.stop()
-    }
-    
-    //MARK: private
-    private func getVehicle(vin: String){
-        let service = CarService()
-        service.getVehicle(vin: vin) { response in
-            switch response{
-            case .success(let car):
-                DispatchQueue.main.async {
-                    print(car)
-                    self.startScan()
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-}
-    
     
 struct ScanVINView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject private var viewModel = ScanVINViewModel()
+    @StateObject private var viewModel = ViewModel()
     
     init(){
         print("ScanVINView init")
@@ -141,6 +88,59 @@ struct ScanVINView: View {
     }
 }
 
+extension ScanVINView{
+    class ViewModel: ObservableObject {
+        var overlayColor = Color(red: 233/255.0, green: 31/255.0, blue: 31/255.0)
+        var service: ScanService
+        
+        init() {
+            self.service = ScanVINService()
+            self.service.deviceOrientation = .landscapeRight
+        }
+        
+        func startScan(){
+            self.overlayColor = Color(red: 233/255.0, green: 31/255.0, blue: 31/255.0)
+            self.service.prepareScan { (result) in
+                switch result{
+                case .success(let data):
+                    guard let vin = data.first?.result else {
+                        return
+                    }
+                    if self.service.state == .active {
+                        DispatchQueue.main.async {
+                            self.stopScan()
+                            self.overlayColor = Color(red: 31/255.0, green: 189/255.0, blue: 233/255.0)
+                        }
+                        self.getVehicle(vin: vin)
+                    }
+                case .failure(let error):
+                    //TODO: show error
+                    print(error)
+                }
+            }
+        }
+        
+        func stopScan(){
+            self.service.stop()
+        }
+        
+        //MARK: private
+        private func getVehicle(vin: String){
+            let service = CarService()
+            service.getVehicle(vin: vin) { response in
+                switch response{
+                case .success(let car):
+                    DispatchQueue.main.async {
+                        print(car)
+                        self.startScan()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+}
 
 #Preview {
     ScanVINView()

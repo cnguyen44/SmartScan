@@ -7,15 +7,8 @@
 
 import SwiftUI
 
-class ProfileViewModel: ObservableObject {
-    func signout(handler: @escaping (Bool)->Void){
-        let service = AuthenticationService()
-        service.signout(handler: handler)
-    }
-}
-
 struct ProfileView: View {
-    @StateObject private var viewModel = ProfileViewModel()
+    @StateObject private var viewModel = ViewModel()
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var appLockVM: AppLockViewModel
     @State var email: String?
@@ -118,6 +111,15 @@ struct ProfileView: View {
                 Text("Back").padding(.leading, -5).font(.system(size: 17))
             }
         }))
+    }
+}
+
+extension ProfileView{
+    class ViewModel: ObservableObject {
+        func signout(handler: @escaping (Bool)->Void){
+            let service = AuthenticationService()
+            service.signout(handler: handler)
+        }
     }
 }
 
