@@ -35,6 +35,7 @@
 		87A17DDB2BAF990E000172F9 /* ARAnnotationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A17DDA2BAF990E000172F9 /* ARAnnotationService.swift */; };
 		87A17DDD2BAF99E0000172F9 /* ARAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A17DDC2BAF99E0000172F9 /* ARAnnotationView.swift */; };
 		87A17DE12BAF9B77000172F9 /* ARDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A17DE02BAF9B77000172F9 /* ARDataManager.swift */; };
+		87AA59752BBDD71400D24E1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87AA59742BBDD71400D24E1E /* GoogleService-Info.plist */; };
 		87D697C12BAFA878004235CF /* targetCircle2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 87D697BE2BAFA877004235CF /* targetCircle2.usdz */; };
 		87D697C22BAFA878004235CF /* targetSquare.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 87D697BF2BAFA877004235CF /* targetSquare.usdz */; };
 		87D697C32BAFA878004235CF /* targetCircle.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 87D697C02BAFA877004235CF /* targetCircle.usdz */; };
@@ -92,6 +93,7 @@
 		87A17DDA2BAF990E000172F9 /* ARAnnotationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAnnotationService.swift; sourceTree = "<group>"; };
 		87A17DDC2BAF99E0000172F9 /* ARAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAnnotationView.swift; sourceTree = "<group>"; };
 		87A17DE02BAF9B77000172F9 /* ARDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDataManager.swift; sourceTree = "<group>"; };
+		87AA59742BBDD71400D24E1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		87D697BE2BAFA877004235CF /* targetCircle2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = targetCircle2.usdz; sourceTree = "<group>"; };
 		87D697BF2BAFA877004235CF /* targetSquare.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = targetSquare.usdz; sourceTree = "<group>"; };
 		87D697C02BAFA877004235CF /* targetCircle.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = targetCircle.usdz; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				87A17D862BAF0E03000172F9 /* Resources */,
 				87F10B892BAE91E600D01145 /* SmartScanApp.swift */,
 				87F10B8D2BAE91E900D01145 /* Assets.xcassets */,
+				87AA59742BBDD71400D24E1E /* GoogleService-Info.plist */,
 				87F10B8F2BAE91E900D01145 /* Preview Content */,
 			);
 			path = SmartScan;
@@ -379,6 +382,7 @@
 				87F10B832BAE91E600D01145 /* Frameworks */,
 				87F10B842BAE91E600D01145 /* Resources */,
 				D422D4CCE2E3ACBD85C2770A /* [CP] Embed Pods Frameworks */,
+				87AA59762BBDDD0800D24E1E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -445,6 +449,7 @@
 				87F10B912BAE91E900D01145 /* Preview Assets.xcassets in Resources */,
 				87F10B8E2BAE91E900D01145 /* Assets.xcassets in Resources */,
 				87D697C22BAFA878004235CF /* targetSquare.usdz in Resources */,
+				87AA59752BBDD71400D24E1E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,6 +477,23 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		87AA59762BBDDD0800D24E1E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Upload crash debug symbol\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		D422D4CCE2E3ACBD85C2770A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -718,6 +740,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"SmartScan/Preview Content\"";
 				DEVELOPMENT_TEAM = 6N73P57G4W;
 				ENABLE_PREVIEWS = YES;

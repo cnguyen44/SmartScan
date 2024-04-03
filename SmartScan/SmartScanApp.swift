@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     static var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
@@ -33,6 +34,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         }
         // register remote notifications
         UIApplication.shared.registerForRemoteNotifications()
+        
+        // Init Firebase
+        FirebaseApp.configure()
         
         return true
     }
