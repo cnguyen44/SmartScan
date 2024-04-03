@@ -6,6 +6,10 @@ inhibit_all_warnings!
 
 def common_pods
   pod 'lottie-ios'
+  
+  # Add the Firebase pod for Google Analytics
+  pod 'FirebaseCrashlytics'
+  
 end
 
 target 'SmartScan' do
